@@ -29,6 +29,8 @@ class Tag:
         attrs = []
         if self.attributes != {}:
             for attribute, value in self.attributes.items():
+                if "_" in attribute:
+                    attribute = attribute.replace("_", "-")
                 attrs.append(f"{attribute}=\"{value}\"")
         attrs = " ".join(attrs)
 
@@ -44,7 +46,7 @@ class Tag:
             return opening + internal + ending
         else:
             if self.is_single:
-                return f"<{self.tag}{attrs}>"
+                return f"<{self.tag}{attrs}/>"
             else:
                 return f"<{self.tag}{attrs}>{self.text}</{self.tag}>"
 
@@ -93,7 +95,7 @@ if __name__ == "__main__":
                     paragraph.text = "another test"
                     div += paragraph
 
-                with Tag("img", is_single=True, src="/icon.png") as img:
+                with Tag("img", is_single=True, src="/icon.png", data_image="responsive") as img:
                     div += img
 
                 body += div
